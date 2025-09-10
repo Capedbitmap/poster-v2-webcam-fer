@@ -8,6 +8,16 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
+# Stubs needed to unpickle upstream checkpoints that reference these classes
+# in their original training script (__main__). We ignore their contents.
+class RecorderMeter1:
+    def __init__(self, *args, **kwargs):
+        pass
+
+class RecorderMeter:
+    def __init__(self, *args, **kwargs):
+        pass
+
 # Paths
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(ROOT_DIR, os.pardir))
