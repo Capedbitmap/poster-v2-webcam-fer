@@ -3,3 +3,6 @@ numpy
 opencv-python
 torch
 torchvision
+timm
+thop
+gdown
