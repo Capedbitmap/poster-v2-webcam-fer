@@ -1,8 +1,6 @@
 import os
 import sys
-import time
 from typing import Tuple
-
 import cv2
 import numpy as np
 import torch
