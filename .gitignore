@@ -1,0 +1,52 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+.env/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking / tooling
+.mypy_cache/
+.pytype/
+.pyre/
+.ruff_cache/
+
+# Editors/IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+logs/
+*.log
+
+# Data / models / large artifacts
+models/
+weights/
+checkpoints/
+outputs/
+
+# External repos (ignored; we will clone POSTER_V2 here)
+external/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
