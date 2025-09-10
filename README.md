@@ -1,35 +1,45 @@
 Poster V2 Simple Python Test
 
-This is a minimal test harness to run facial emotion classification using the POSTER_V2 model with a live webcam feed.
+Minimal, reproducible webcam demo for POSTER_V2 facial emotion recognition.
 
-What it does:
-- Detects a single face via OpenCV Haar cascade
-- Draws a bounding box around the largest face
-- Runs POSTER_V2 (AffectNet 8-class checkpoint) to classify the emotion
-- Renders the predicted emotion under the face; box/text color varies by emotion
+What it does
+- Detect the largest face via OpenCV Haar cascade
+- Classify emotion with POSTER_V2 (AffectNet 8-class checkpoint)
+- Draw a bounding box and a color-coded label under the face
 
-Project layout:
-- src/webcam_emotion.py — the minimal webcam script
-- external/POSTER_V2 — cloned upstream repository (ignored by git)
-- external/POSTER_V2/models/pretrain — downloaded pretrain weights (ignored by git)
-- external/POSTER_V2/checkpoint — downloaded dataset checkpoint (ignored by git)
-- .venv — Python virtual environment (ignored by git)
+Quick start (macOS/Apple Silicon tested)
+- Prereqs: git, Python 3.10–3.13, camera permission for your terminal
+- One command setup:
+  
+  bash scripts/bootstrap.sh
 
-Setup (already performed by automation):
-- Created a local venv: .venv
-- Installed minimal deps in the venv: numpy, opencv-python, torch, torchvision, timm, thop, gdown
-- Cloned POSTER_V2 into external/POSTER_V2
-- Downloaded pretrains (ir50, mobilefacenet) and the AffectNet-8 POSTER_V2 checkpoint
-
-Run it:
-- On macOS you may need to grant camera permission to your terminal.
-- Start the webcam demo:
+- Run the demo:
   
   ./.venv/bin/python src/webcam_emotion.py
 
-- Press q to quit.
+- Quit: press q
 
-Notes:
-- We use the AffectNet 8-class checkpoint for simplicity because the 7-class model file in the repo has hardcoded absolute Windows paths for pretrain weights. The 8-class version loads pretrains from a relative path.
-- The 8 classes assumed are: neutral, happy, sad, surprise, fear, disgust, anger, contempt.
-- If you want the 7-class variant instead, we can adapt the script to instantiate the 7-class model and fix the pretrain paths.
+Notes
+- We use the AffectNet 8-class checkpoint because the 7-class file in the upstream repo hardcodes Windows paths for pretrains. The 8-class variant loads pretrains from a relative path.
+- Classes assumed: neutral, happy, sad, surprise, fear, disgust, anger, contempt.
+- If you prefer the 7-class variant (e.g., RAF-DB), open an issue or PR—we can switch model and paths cleanly.
+
+Project layout
+- src/webcam_emotion.py — minimal webcam script
+- scripts/bootstrap.sh — reproducible setup (venv, deps, clone, weights)
+- external/POSTER_V2 — upstream repo (ignored by git)
+- external/POSTER_V2/models/pretrain — pretrain weights (ignored by git)
+- external/POSTER_V2/checkpoint — dataset checkpoint (ignored by git)
+- .venv — virtual environment (ignored by git)
+
+Troubleshooting
+- Camera permission: enable in System Settings → Privacy & Security → Camera.
+- GPU/MPS issues: the script auto-uses Apple MPS if available; otherwise CPU.
+- Editor import warnings (VS Code): add these settings if needed:
+  {
+    "python.analysis.extraPaths": ["external/POSTER_V2"],
+    "python.defaultInterpreterPath": ".venv/bin/python"
+  }
+
+License
+MIT for this wrapper repo. POSTER_V2 itself is MIT-licensed (see its LICENSE in the upstream repo).
