@@ -1,45 +1,61 @@
-Poster V2 Simple Python Test
+# Poster V2 Webcam Emotion (FER)
 
-Minimal, reproducible webcam demo for POSTER_V2 facial emotion recognition.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.10--3.13-blue)
+![Platform](https://img.shields.io/badge/platform-macOS%20(Apple%20Silicon)-lightgrey)
 
-What it does
-- Detect the largest face via OpenCV Haar cascade
-- Classify emotion with POSTER_V2 (AffectNet 8-class checkpoint)
-- Draw a bounding box and a color-coded label under the face
+Minimal, reproducible live webcam demo for POSTER_V2 facial expression recognition (FER).
 
-Quick start (macOS/Apple Silicon tested)
+## Features
+- Detects the largest face via OpenCV Haar cascade
+- Classifies emotion using POSTER_V2 (AffectNet 8-class checkpoint)
+- Draws a bounding box and color-coded label under the face
+- Fully local: venv + pinned dependencies; no global installs
+
+## Quick Start (macOS/Apple Silicon tested)
 - Prereqs: git, Python 3.10–3.13, camera permission for your terminal
-- One command setup:
-  
+- Setup:
+  ```bash path=null start=null
   bash scripts/bootstrap.sh
-
-- Run the demo:
-  
+  ```
+- Run:
+  ```bash path=null start=null
   ./.venv/bin/python src/webcam_emotion.py
-
+  ```
 - Quit: press q
 
-Notes
-- We use the AffectNet 8-class checkpoint because the 7-class file in the upstream repo hardcodes Windows paths for pretrains. The 8-class variant loads pretrains from a relative path.
-- Classes assumed: neutral, happy, sad, surprise, fear, disgust, anger, contempt.
-- If you prefer the 7-class variant (e.g., RAF-DB), open an issue or PR—we can switch model and paths cleanly.
+## Notes
+- We use the AffectNet 8-class checkpoint because the 7-class model in the upstream repo hardcodes Windows paths for pretrains. The 8-class variant loads pretrains from a relative path.
+- FER = Facial Expression Recognition. Classes assumed: neutral, happy, sad, surprise, fear, disgust, anger, contempt.
+- Prefer another dataset (e.g., RAF-DB 7-class)? Open an issue/PR—we can switch the architecture and paths cleanly.
 
-Project layout
-- src/webcam_emotion.py — minimal webcam script
-- scripts/bootstrap.sh — reproducible setup (venv, deps, clone, weights)
-- external/POSTER_V2 — upstream repo (ignored by git)
-- external/POSTER_V2/models/pretrain — pretrain weights (ignored by git)
-- external/POSTER_V2/checkpoint — dataset checkpoint (ignored by git)
-- .venv — virtual environment (ignored by git)
+## Project Layout
+- `src/webcam_emotion.py` — minimal webcam script
+- `scripts/bootstrap.sh` — reproducible setup (venv, deps, clone, weights)
+- `external/POSTER_V2` — upstream repo (ignored by git)
+- `external/POSTER_V2/models/pretrain` — pretrain weights (ignored)
+- `external/POSTER_V2/checkpoint` — dataset checkpoint (ignored)
+- `.venv` — local virtual environment (ignored)
 
-Troubleshooting
-- Camera permission: enable in System Settings → Privacy & Security → Camera.
-- GPU/MPS issues: the script auto-uses Apple MPS if available; otherwise CPU.
-- Editor import warnings (VS Code): add these settings if needed:
+## Reproducibility
+- Pinned dependencies in `requirements.txt` (torch, torchvision, timm, thop, numpy, OpenCV, gdown, pillow)
+- One-command bootstrap sets up venv, installs pins, clones upstream, downloads weights
+- No global installs; everything stays within `.venv`
+
+## Troubleshooting
+- Camera permission: System Settings → Privacy & Security → Camera → allow your terminal
+- GPU/MPS: the script uses Apple MPS if available; otherwise CPU
+- VS Code import hints (optional settings):
+  ```json path=null start=null
   {
     "python.analysis.extraPaths": ["external/POSTER_V2"],
     "python.defaultInterpreterPath": ".venv/bin/python"
   }
+  ```
 
-License
-MIT for this wrapper repo. POSTER_V2 itself is MIT-licensed (see its LICENSE in the upstream repo).
+## Acknowledgements
+- Upstream model: POSTER V2 — https://github.com/Talented-Q/POSTER_V2 (MIT)
+
+## License
+- MIT for this wrapper repo (see [LICENSE](LICENSE))
+- POSTER_V2 is MIT-licensed in its own repository
