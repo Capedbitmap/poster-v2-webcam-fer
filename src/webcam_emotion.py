@@ -83,7 +83,18 @@ def load_model() -> torch.nn.Module:
     # We explicitly set weights_only=False since we trust the source (upstream repo checkpoint).
     ckpt = torch.load(POSTER_CKPT_PATH, map_location="cpu", weights_only=False)
     state_dict = ckpt["state_dict"] if isinstance(ckpt, dict) and "state_dict" in ckpt else ckpt
-    model.load_state_dict(state_dict)
+
+    # Handle DataParallel checkpoints where keys are prefixed with "module."
+    if any(k.startswith("module.") for k in state_dict.keys()):
+        state_dict = {k[len("module."):]: v for k, v in state_dict.items()}
+
+    # Be tolerant to missing keys (e.g., some submodules already loaded from pretrains)
+    missing, unexpected = model.load_state_dict(state_dict, strict=False)
+    if missing:
+        print(f"[warn] Missing keys when loading checkpoint: {len(missing)} (showing first 5) -> {missing[:5]}")
+    if unexpected:
+        print(f"[warn] Unexpected keys when loading checkpoint: {len(unexpected)} (showing first 5) -> {unexpected[:5]}")
+
     model.eval()
     model.to(DEVICE)
     return model
@@ -129,7 +140,7 @@ def main():
     print("Model loaded.")
 
     # Face detector (Haar cascade)
-    face_cascade_path = os.path.join(cv2.data.haarcascades, 'haarcascade_frontalface_default.xml')
+    face_cascade_path = os.path.join(cv2.data.haarcascades, 'haarcascade_frontalface_default.xml')  # type: ignore[attr-defined]
     face_cascade = cv2.CascadeClassifier(face_cascade_path)
     if face_cascade.empty():
         print("Failed to load Haar cascade for face detection.")
