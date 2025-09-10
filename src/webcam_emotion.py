@@ -69,7 +69,9 @@ def load_model() -> torch.nn.Module:
         os.chdir(orig_cwd)
 
     # Load dataset checkpoint (AffectNet-8)
-    ckpt = torch.load(POSTER_CKPT_PATH, map_location="cpu")
+    # PyTorch >= 2.6 defaults to weights_only=True, which breaks on this checkpoint.
+    # We explicitly set weights_only=False since we trust the source (upstream repo checkpoint).
+    ckpt = torch.load(POSTER_CKPT_PATH, map_location="cpu", weights_only=False)
     state_dict = ckpt["state_dict"] if isinstance(ckpt, dict) and "state_dict" in ckpt else ckpt
     model.load_state_dict(state_dict)
     model.eval()
