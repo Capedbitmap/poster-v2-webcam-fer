@@ -1,0 +1,5 @@
+# Minimal runtime deps for simple webcam + Poster_V2 integration
+numpy
+opencv-python
+torch
+torchvision
